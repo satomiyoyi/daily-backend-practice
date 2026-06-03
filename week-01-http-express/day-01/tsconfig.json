@@ -1,10 +1,9 @@
 {
-    "compilerOptions": {
-        "target": "es2025",
-        "module": "commonjs",
-        "strict": true
-    },
-    "include": [
-        "index.ts"
-    ]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "index.ts"
+  ]
 }
