@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev:day-01": "tsx watch day-01/index.ts",
-    "start:day-01": "tsx day-01/index.ts",
-    "build:day-01": "tsc -p day-01/tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:day-02": "tsx watch day-02/solution/index.ts"
+    "dev:day-02": "tsx watch day-02/solution/index.ts",
+    "dev:day-03": "tsx watch day-03/solution/index.ts"
   },
   "private": true,
   "workspaces": [

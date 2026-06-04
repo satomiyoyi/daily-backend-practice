@@ -16,9 +16,11 @@ app.get('/todos', (req, res) => {
     res.json(todos);
 });
 
-// router.get("/hello", (req, res) => {
-//     res.render("hello");
-// });
+router.get('/hello', (req, res) => {
+  res.send('hello');
+});
+
+app.use('/api', router);
 
 app.get('/todos/:id', (req, res) => {
     const { id } = req.params;
@@ -30,15 +32,7 @@ app.get('/todos/:id', (req, res) => {
     }
 });
 
-app.post('/todos', (req, res) => {
-    const { title } = req.body;
-    if (!title || typeof title !== 'string') {
-        return res.status(400).json({ message: 'Title is required and must be a string' });
-    }
-    const newTodo = { id: nextId++, title, done: false, createdAt: new Date() };
-    todos.push(newTodo);
-    res.status(201).json(newTodo);
-});
+
 
 app.delete('/todos/:id', (req, res) => {
     const { id } = req.params;
@@ -53,4 +47,31 @@ app.delete('/todos/:id', (req, res) => {
 
 app.listen(3003, () => {
     console.log('Server is running on http://localhost:3003');
+});
+
+// 请求日志中间件
+app.use((req, res, next) => {
+    const requestStart = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - requestStart;
+        console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+    });
+    next();
+});
+
+// post请求体验证中间件
+app.post('/todos', (req, res) => {
+    const { title } = req.body;
+    if (!title || typeof title !== 'string') {
+        return res.status(400).json({ message: 'Title is required and must be a string' });
+    }
+    const newTodo = { id: nextId++, title, done: false, createdAt: new Date() };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+});
+
+// 错误处理中间件
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Internal Server Error' });
 });
